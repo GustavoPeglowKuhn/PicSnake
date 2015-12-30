@@ -1,16 +1,16 @@
-CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
+CCS PCH C Compiler, Version 5.015, 5967               30-dez-15 01:46
 
                Filename:   D:\pasta\14\Grafic LCD\snake glcd\main.lst
 
-               ROM used:   2410 bytes (7%)
-                           Largest free fragment is 30358
-               RAM used:   274 (13%) at main() level
+               ROM used:   2452 bytes (7%)
+                           Largest free fragment is 30316
+               RAM used:   276 (13%) at main() level
                            303 (15%) worst case
                Stack used: 4 locations
                Stack size: 31
 
 *
-0000:  GOTO   0864
+0000:  GOTO   0880
 .................... #include <18F4550.h> 
 .................... //////////// Standard Header file for the PIC18F4550 device //////////////// 
 .................... /////////////////////////////////////////////////////////////////////////// 
@@ -278,23 +278,23 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 01FC:  DATA 01,02
 01FE:  DATA 04,02
 *
-07C8:  ADDWF  FE8,W
-07CA:  CLRF   FF7
-07CC:  RLCF   FF7,F
-07CE:  ADDLW  E3
-07D0:  MOVWF  FF6
-07D2:  MOVLW  07
-07D4:  ADDWFC FF7,F
-07D6:  TBLRD*-
-07D8:  MOVF   FF5,W
-07DA:  MOVWF  FFA
-07DC:  TBLRD*
-07DE:  MOVF   FF5,W
-07E0:  MOVWF  FF9
-07E2:  DATA 46,06
-07E4:  DATA 56,06
-07E6:  DATA 66,06
-07E8:  DATA 76,06
+085E:  ADDWF  FE8,W
+0860:  CLRF   FF7
+0862:  RLCF   FF7,F
+0864:  ADDLW  79
+0866:  MOVWF  FF6
+0868:  MOVLW  08
+086A:  ADDWFC FF7,F
+086C:  TBLRD*-
+086E:  MOVF   FF5,W
+0870:  MOVWF  FFA
+0872:  TBLRD*
+0874:  MOVF   FF5,W
+0876:  MOVWF  FF9
+0878:  DATA 46,06
+087A:  DATA 56,06
+087C:  DATA 66,06
+087E:  DATA 76,06
 ....................  
 .................... #list 
 ....................  
@@ -674,7 +674,7 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 0370:  CLRF   x13
 0372:  MOVLB  0
 0374:  RCALL  0232
-0376:  GOTO   08E0 (RETURN)
+0376:  GOTO   08FC (RETURN)
 .................... } 
 ....................  
 ....................  
@@ -1465,6 +1465,9 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 .................... #endif 
 ....................  
 ....................  
+.................... #define width     128 
+.................... #define height    64 
+.................... #define initSize  10 
 .................... #define direita   0 
 .................... #define dir       pin_c1 
 .................... #define cima      1 
@@ -1481,7 +1484,7 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 .................... struct Dot snake[128]; 
 .................... struct Dot point; 
 .................... int8   sentido; 
-.................... int8   size=10; 
+.................... int8   size=initSize; 
 ....................  
 .................... void mov(){ 
 ....................    int8 i; 
@@ -1498,9 +1501,9 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 063C:  BC    0688
 063E:  ADDLW  04
 0640:  MOVLB  0
-0642:  GOTO   07C8
+0642:  GOTO   085E
 ....................       case direita: 
-....................          if(aux.x==127) 
+....................          if(aux.x==width-1) 
 0646:  MOVLB  1
 0648:  MOVF   x13,W
 064A:  SUBLW  7F
@@ -1518,7 +1521,7 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 0656:  MOVLB  1
 0658:  MOVF   x14,F
 065A:  BNZ   0662
-....................             aux.y=63; 
+....................             aux.y=height-1; 
 065C:  MOVLW  3F
 065E:  MOVWF  x14
 0660:  BRA    0664
@@ -1532,7 +1535,7 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 0666:  MOVLB  1
 0668:  MOVF   x13,F
 066A:  BNZ   0672
-....................             aux.x=127; 
+....................             aux.x=width-1; 
 066C:  MOVLW  7F
 066E:  MOVWF  x13
 0670:  BRA    0674
@@ -1542,7 +1545,7 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 ....................       break; 
 0674:  BRA    0688
 ....................       case baixo: 
-....................          if(aux.y==63) 
+....................          if(aux.y==height-1) 
 0676:  MOVLB  1
 0678:  MOVF   x14,W
 067A:  SUBLW  3F
@@ -1563,7 +1566,7 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 068C:  MOVF   x11,W
 068E:  SUBWF  x12,W
 0690:  BC    0702
-....................       if(aux.x==snake[i].x && aux.y==snake[i].y){ 
+....................       if(aux.x==snake[i].x && aux.y==snake[i].y){     //end game 
 0692:  BCF    FD8.0
 0694:  RLCF   x12,W
 0696:  CLRF   x16
@@ -1620,7 +1623,7 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 06F8:  DECFSZ x15,F
 06FA:  BRA    06EE
 ....................          return; 
-06FC:  BRA    07C2
+06FC:  BRA    0858
 ....................       } 
 06FE:  INCF   x12,F
 0700:  BRA    068C
@@ -1628,395 +1631,367 @@ CCS PCH C Compiler, Version 5.015, 5967               29-dez-15 13:47
 ....................    if(aux.x==point.x && aux.y==point.y){ 
 0702:  MOVF   x0E,W
 0704:  SUBWF  x13,W
-0706:  BNZ   0710
+0706:  BNZ   0738
 0708:  MOVF   x0F,W
 070A:  SUBWF  x14,W
-070C:  BNZ   0710
+070C:  BNZ   0738
 ....................       size++; 
 070E:  INCF   x11,F
-....................    } 
-....................    for(i=size;i>0;i--){ 
-0710:  MOVFF  111,112
-0714:  MOVF   x12,F
-0716:  BZ    07BA
-....................       snake[i].x=snake[i-1].x; 
-0718:  BCF    FD8.0
-071A:  RLCF   x12,W
-071C:  CLRF   x16
-071E:  MOVWF  x15
-0720:  MOVLW  0E
-0722:  ADDWF  x15,W
-0724:  MOVWF  01
-0726:  MOVLW  00
-0728:  ADDWFC x16,W
-072A:  MOVWF  03
+....................       point.x = get_timer0() % width; 
+0710:  MOVF   FD6,W
+0712:  MOVWF  x15
+0714:  MOVF   x15,W
+0716:  ANDLW  7F
+0718:  MOVWF  x0E
+....................       point.y = get_timer0() % height; 
+071A:  MOVF   FD6,W
+071C:  MOVWF  x15
+071E:  MOVF   x15,W
+0720:  ANDLW  3F
+0722:  MOVWF  x0F
+....................       glcd_pixel(point.x,point.y,1); 
+0724:  MOVFF  10E,127
+0728:  MOVFF  10F,128
 072C:  MOVLW  01
-072E:  SUBWF  x12,W
-0730:  MOVWF  00
-0732:  BCF    FD8.0
-0734:  RLCF   00,F
-0736:  MOVF   00,W
-0738:  CLRF   x1A
-073A:  MOVWF  x19
-073C:  MOVLW  0E
-073E:  ADDWF  x19,W
-0740:  MOVWF  FE9
-0742:  MOVLW  00
-0744:  ADDWFC x1A,W
-0746:  MOVWF  FEA
-0748:  MOVFF  FEF,11B
-074C:  MOVFF  03,FEA
-0750:  MOVFF  01,FE9
-0754:  MOVFF  11B,FEF
+072E:  MOVWF  x29
+0730:  MOVLB  0
+0732:  RCALL  03C0
+....................    } 
+0734:  BRA    0792
+0736:  MOVLB  1
+....................    else{ 
+....................       glcd_pixel(snake[size-1].x,snake[size-1].y,0); 
+0738:  MOVLW  01
+073A:  SUBWF  x11,W
+073C:  MOVWF  00
+073E:  BCF    FD8.0
+0740:  RLCF   00,F
+0742:  MOVF   00,W
+0744:  CLRF   x16
+0746:  MOVWF  x15
+0748:  MOVLW  0E
+074A:  ADDWF  x15,W
+074C:  MOVWF  FE9
+074E:  MOVLW  00
+0750:  ADDWFC x16,W
+0752:  MOVWF  FEA
+0754:  MOVFF  FEF,117
+0758:  MOVLW  01
+075A:  SUBWF  x11,W
+075C:  MOVWF  00
+075E:  BCF    FD8.0
+0760:  RLCF   00,F
+0762:  MOVF   00,W
+0764:  CLRF   x19
+0766:  MOVWF  x18
+0768:  MOVLW  01
+076A:  ADDWF  x18,W
+076C:  MOVWF  01
+076E:  MOVLW  00
+0770:  ADDWFC x19,W
+0772:  MOVWF  03
+0774:  MOVF   01,W
+0776:  ADDLW  0E
+0778:  MOVWF  FE9
+077A:  MOVLW  00
+077C:  ADDWFC 03,W
+077E:  MOVWF  FEA
+0780:  MOVFF  FEF,118
+0784:  MOVFF  117,127
+0788:  MOVFF  118,128
+078C:  CLRF   x29
+078E:  MOVLB  0
+0790:  RCALL  03C0
+....................    } 
+....................    glcd_pixel(aux.x,aux.y,1); 
+0792:  MOVFF  113,127
+0796:  MOVFF  114,128
+079A:  MOVLW  01
+079C:  MOVLB  1
+079E:  MOVWF  x29
+07A0:  MOVLB  0
+07A2:  RCALL  03C0
+....................    for(i=size;i>0;i--){ 
+07A4:  MOVFF  111,112
+07A8:  MOVLB  1
+07AA:  MOVF   x12,F
+07AC:  BZ    0850
+....................       snake[i].x=snake[i-1].x; 
+07AE:  BCF    FD8.0
+07B0:  RLCF   x12,W
+07B2:  CLRF   x16
+07B4:  MOVWF  x15
+07B6:  MOVLW  0E
+07B8:  ADDWF  x15,W
+07BA:  MOVWF  01
+07BC:  MOVLW  00
+07BE:  ADDWFC x16,W
+07C0:  MOVWF  03
+07C2:  MOVLW  01
+07C4:  SUBWF  x12,W
+07C6:  MOVWF  00
+07C8:  BCF    FD8.0
+07CA:  RLCF   00,F
+07CC:  MOVF   00,W
+07CE:  CLRF   x1A
+07D0:  MOVWF  x19
+07D2:  MOVLW  0E
+07D4:  ADDWF  x19,W
+07D6:  MOVWF  FE9
+07D8:  MOVLW  00
+07DA:  ADDWFC x1A,W
+07DC:  MOVWF  FEA
+07DE:  MOVFF  FEF,11B
+07E2:  MOVFF  03,FEA
+07E6:  MOVFF  01,FE9
+07EA:  MOVFF  11B,FEF
 ....................       snake[i].y=snake[i-1].y; 
-0758:  BCF    FD8.0
-075A:  RLCF   x12,W
-075C:  CLRF   x16
-075E:  MOVWF  x15
-0760:  MOVLW  01
-0762:  ADDWF  x15,W
-0764:  MOVWF  01
-0766:  MOVLW  00
-0768:  ADDWFC x16,W
-076A:  MOVWF  03
-076C:  MOVF   01,W
-076E:  ADDLW  0E
-0770:  MOVWF  01
-0772:  MOVLW  00
-0774:  ADDWFC 03,F
-0776:  MOVFF  01,115
-077A:  MOVFF  03,116
-077E:  MOVLW  01
-0780:  SUBWF  x12,W
-0782:  MOVWF  00
-0784:  BCF    FD8.0
-0786:  RLCF   00,F
-0788:  MOVF   00,W
-078A:  CLRF   x18
-078C:  MOVWF  x17
-078E:  MOVLW  01
-0790:  ADDWF  x17,W
-0792:  MOVWF  01
-0794:  MOVLW  00
-0796:  ADDWFC x18,W
-0798:  MOVWF  03
-079A:  MOVF   01,W
-079C:  ADDLW  0E
-079E:  MOVWF  FE9
-07A0:  MOVLW  00
-07A2:  ADDWFC 03,W
-07A4:  MOVWF  FEA
-07A6:  MOVFF  FEF,117
-07AA:  MOVFF  116,FEA
-07AE:  MOVFF  115,FE9
-07B2:  MOVFF  117,FEF
-07B6:  DECF   x12,F
-07B8:  BRA    0714
+07EE:  BCF    FD8.0
+07F0:  RLCF   x12,W
+07F2:  CLRF   x16
+07F4:  MOVWF  x15
+07F6:  MOVLW  01
+07F8:  ADDWF  x15,W
+07FA:  MOVWF  01
+07FC:  MOVLW  00
+07FE:  ADDWFC x16,W
+0800:  MOVWF  03
+0802:  MOVF   01,W
+0804:  ADDLW  0E
+0806:  MOVWF  01
+0808:  MOVLW  00
+080A:  ADDWFC 03,F
+080C:  MOVFF  01,115
+0810:  MOVFF  03,116
+0814:  MOVLW  01
+0816:  SUBWF  x12,W
+0818:  MOVWF  00
+081A:  BCF    FD8.0
+081C:  RLCF   00,F
+081E:  MOVF   00,W
+0820:  CLRF   x18
+0822:  MOVWF  x17
+0824:  MOVLW  01
+0826:  ADDWF  x17,W
+0828:  MOVWF  01
+082A:  MOVLW  00
+082C:  ADDWFC x18,W
+082E:  MOVWF  03
+0830:  MOVF   01,W
+0832:  ADDLW  0E
+0834:  MOVWF  FE9
+0836:  MOVLW  00
+0838:  ADDWFC 03,W
+083A:  MOVWF  FEA
+083C:  MOVFF  FEF,117
+0840:  MOVFF  116,FEA
+0844:  MOVFF  115,FE9
+0848:  MOVFF  117,FEF
+084C:  DECF   x12,F
+084E:  BRA    07AA
 ....................    } 
 ....................    snake[0].x=aux.x; 
-07BA:  MOVFF  113,0E
+0850:  MOVFF  113,0E
 ....................    snake[0].y=aux.y; 
-07BE:  MOVFF  114,0F
-07C2:  MOVLB  0
-07C4:  GOTO   0958 (RETURN)
+0854:  MOVFF  114,0F
+0858:  MOVLB  0
+085A:  GOTO   0986 (RETURN)
 .................... } 
 ....................  
-.................... void draw(){ 
+.................... /*void draw(){ 
 ....................    int8 i; 
 ....................    glcd_fillScreen(0); 
-*
-07EA:  MOVLB  1
-07EC:  CLRF   x13
-07EE:  MOVLB  0
-07F0:  RCALL  0232
 ....................    for(i=1;i<size;i++){ 
-07F2:  MOVLW  01
-07F4:  MOVLB  1
-07F6:  MOVWF  x12
-07F8:  MOVF   x11,W
-07FA:  SUBWF  x12,W
-07FC:  BC    0850
 ....................       glcd_pixel(snake[i].x,snake[i].y,1); 
-07FE:  BCF    FD8.0
-0800:  RLCF   x12,W
-0802:  CLRF   x14
-0804:  MOVWF  x13
-0806:  MOVLW  0E
-0808:  ADDWF  x13,W
-080A:  MOVWF  FE9
-080C:  MOVLW  00
-080E:  ADDWFC x14,W
-0810:  MOVWF  FEA
-0812:  MOVFF  FEF,115
-0816:  BCF    FD8.0
-0818:  RLCF   x12,W
-081A:  CLRF   x17
-081C:  MOVWF  x16
-081E:  MOVLW  01
-0820:  ADDWF  x16,W
-0822:  MOVWF  01
-0824:  MOVLW  00
-0826:  ADDWFC x17,W
-0828:  MOVWF  03
-082A:  MOVF   01,W
-082C:  ADDLW  0E
-082E:  MOVWF  FE9
-0830:  MOVLW  00
-0832:  ADDWFC 03,W
-0834:  MOVWF  FEA
-0836:  MOVFF  FEF,116
-083A:  MOVFF  115,127
-083E:  MOVFF  116,128
-0842:  MOVLW  01
-0844:  MOVWF  x29
-0846:  MOVLB  0
-0848:  RCALL  03C0
-084A:  MOVLB  1
-084C:  INCF   x12,F
-084E:  BRA    07F8
 ....................    } 
 ....................    glcd_pixel(point.x,point.y,1); 
-0850:  MOVFF  10E,127
-0854:  MOVFF  10F,128
-0858:  MOVLW  01
-085A:  MOVWF  x29
-085C:  MOVLB  0
-085E:  RCALL  03C0
-0860:  GOTO   095A (RETURN)
-.................... } 
+.................... }*/ 
 ....................  
 .................... void main(){ 
-0864:  CLRF   FF8
-0866:  BCF    FD0.7
-0868:  MOVLW  0A
-086A:  MOVLB  1
-086C:  MOVWF  x11
-086E:  MOVF   FC1,W
-0870:  ANDLW  C0
-0872:  IORLW  0F
-0874:  MOVWF  FC1
-0876:  MOVLW  07
-0878:  MOVWF  FB4
-087A:  MOVLW  59
-087C:  MOVWF  04
-087E:  MOVLW  6F
-0880:  MOVWF  05
-0882:  MOVLW  75
-0884:  MOVWF  06
-0886:  MOVLW  20
-0888:  MOVWF  07
-088A:  MOVLW  4C
-088C:  MOVWF  08
-088E:  MOVLW  6F
-0890:  MOVWF  09
-0892:  MOVLW  73
-0894:  MOVWF  0A
-0896:  MOVLW  65
-0898:  MOVWF  0B
-089A:  MOVLW  21
-089C:  MOVWF  0C
-089E:  CLRF   0D
+*
+0880:  CLRF   FF8
+0882:  BCF    FD0.7
+0884:  MOVLW  0A
+0886:  MOVLB  1
+0888:  MOVWF  x11
+088A:  MOVF   FC1,W
+088C:  ANDLW  C0
+088E:  IORLW  0F
+0890:  MOVWF  FC1
+0892:  MOVLW  07
+0894:  MOVWF  FB4
+0896:  MOVLW  59
+0898:  MOVWF  04
+089A:  MOVLW  6F
+089C:  MOVWF  05
+089E:  MOVLW  75
+08A0:  MOVWF  06
+08A2:  MOVLW  20
+08A4:  MOVWF  07
+08A6:  MOVLW  4C
+08A8:  MOVWF  08
+08AA:  MOVLW  6F
+08AC:  MOVWF  09
+08AE:  MOVLW  73
+08B0:  MOVWF  0A
+08B2:  MOVLW  65
+08B4:  MOVWF  0B
+08B6:  MOVLW  21
+08B8:  MOVWF  0C
+08BA:  CLRF   0D
 ....................    setup_adc_ports(AN0); 
-08A0:  MOVF   FC1,W
-08A2:  ANDLW  C0
-08A4:  IORLW  0E
-08A6:  MOVWF  FC1
+08BC:  MOVF   FC1,W
+08BE:  ANDLW  C0
+08C0:  IORLW  0E
+08C2:  MOVWF  FC1
 ....................    setup_adc(ADC_CLOCK_INTERNAL|ADC_TAD_MUL_0); 
-08A8:  MOVF   FC0,W
-08AA:  ANDLW  C0
-08AC:  IORLW  07
-08AE:  MOVWF  FC0
-08B0:  BCF    FC0.7
-08B2:  BSF    FC2.0
+08C4:  MOVF   FC0,W
+08C6:  ANDLW  C0
+08C8:  IORLW  07
+08CA:  MOVWF  FC0
+08CC:  BCF    FC0.7
+08CE:  BSF    FC2.0
 ....................    setup_psp(PSP_DISABLED); 
-08B4:  BCF    F96.4
+08D0:  BCF    F96.4
 ....................    setup_spi(SPI_SS_DISABLED); 
-08B6:  BCF    FC6.5
-08B8:  BCF    F94.7
-08BA:  BSF    F93.0
-08BC:  BCF    F93.1
-08BE:  MOVLW  01
-08C0:  MOVWF  FC6
-08C2:  MOVLW  00
-08C4:  MOVWF  FC7
+08D2:  BCF    FC6.5
+08D4:  BCF    F94.7
+08D6:  BSF    F93.0
+08D8:  BCF    F93.1
+08DA:  MOVLW  01
+08DC:  MOVWF  FC6
+08DE:  MOVLW  00
+08E0:  MOVWF  FC7
 ....................    setup_wdt(WDT_OFF); 
-08C6:  BCF    FD1.0
+08E2:  BCF    FD1.0
 ....................    setup_timer_0(RTCC_INTERNAL); 
-08C8:  MOVLW  80
-08CA:  MOVWF  FD5
+08E4:  MOVLW  80
+08E6:  MOVWF  FD5
 ....................    setup_timer_1(T1_DISABLED); 
-08CC:  CLRF   FCD
+08E8:  CLRF   FCD
 ....................    setup_timer_2(T2_DISABLED,0,1); 
-08CE:  MOVLW  00
-08D0:  MOVWF  FCA
-08D2:  MOVLW  00
-08D4:  MOVWF  FCB
+08EA:  MOVLW  00
+08EC:  MOVWF  FCA
+08EE:  MOVLW  00
+08F0:  MOVWF  FCB
 ....................    setup_timer_3(T3_DISABLED|T3_DIV_BY_1); 
-08D6:  CLRF   FB1
+08F2:  CLRF   FB1
 ....................  
 ....................    glcd_init(ON);   //inicializa o display 
-08D8:  MOVLW  01
-08DA:  MOVWF  x12
-08DC:  MOVLB  0
-08DE:  BRA    02C8
+08F4:  MOVLW  01
+08F6:  MOVWF  x12
+08F8:  MOVLB  0
+08FA:  BRA    02C8
 ....................    glcd_fillScreen(0); //limpa display inteiro 
-08E0:  MOVLB  1
-08E2:  CLRF   x13
-08E4:  MOVLB  0
-08E6:  RCALL  0232
+08FC:  MOVLB  1
+08FE:  CLRF   x13
+0900:  MOVLB  0
+0902:  RCALL  0232
 ....................  
-....................    snake[0].x = 64; 
-08E8:  MOVLW  40
-08EA:  MOVWF  0E
+....................    snake[0].x = 10; 
+0904:  MOVLW  0A
+0906:  MOVWF  0E
 ....................    snake[0].y = 32; 
-08EC:  MOVLW  20
-08EE:  MOVWF  0F
-....................    snake[1].x = 63; 
-08F0:  MOVLW  3F
-08F2:  MOVWF  10
+0908:  MOVLW  20
+090A:  MOVWF  0F
+....................    /*snake[1].x = 63; 
 ....................    snake[1].y = 32; 
-08F4:  MOVLW  20
-08F6:  MOVWF  11
 ....................    snake[2].x = 62; 
-08F8:  MOVLW  3E
-08FA:  MOVWF  12
 ....................    snake[2].y = 32; 
-08FC:  MOVLW  20
-08FE:  MOVWF  13
 ....................    snake[3].x = 61; 
-0900:  MOVLW  3D
-0902:  MOVWF  14
-....................    snake[3].y = 32; 
-0904:  MOVLW  20
-0906:  MOVWF  15
+....................    snake[3].y = 32;*/ 
 ....................     
-....................    point.x = 50; 
-0908:  MOVLW  32
-090A:  MOVLB  1
-090C:  MOVWF  x0E
-....................    point.y = 32; 
-090E:  MOVLW  20
-0910:  MOVWF  x0F
+....................    point.x = get_timer0() % width; 
+090C:  MOVF   FD6,W
+090E:  MOVLB  1
+0910:  MOVWF  x12
+0912:  MOVF   x12,W
+0914:  ANDLW  7F
+0916:  MOVWF  x0E
+....................    point.y = get_timer0() % height; 
+0918:  MOVF   FD6,W
+091A:  MOVWF  x12
+091C:  MOVF   x12,W
+091E:  ANDLW  3F
+0920:  MOVWF  x0F
+....................    glcd_pixel(point.x,point.y,1); 
+0922:  MOVFF  10E,127
+0926:  MOVFF  10F,128
+092A:  MOVLW  01
+092C:  MOVWF  x29
+092E:  MOVLB  0
+0930:  RCALL  03C0
+....................     
 ....................    while(TRUE){ 
 ....................       if(input(dir)){ 
-0912:  BSF    F94.1
-0914:  BTFSS  F82.1
-0916:  BRA    0922
+0932:  BSF    F94.1
+0934:  BTFSS  F82.1
+0936:  BRA    0946
 ....................          if(sentido!=esquerda) 
-0918:  MOVF   x10,W
-091A:  SUBLW  02
-091C:  BZ    0920
+0938:  MOVLB  1
+093A:  MOVF   x10,W
+093C:  SUBLW  02
+093E:  BZ    0942
 ....................             sentido = direita; 
-091E:  CLRF   x10
+0940:  CLRF   x10
 ....................       } 
-0920:  BRA    0954
+0942:  BRA    0982
+0944:  MOVLB  0
 ....................       else if(input(cim)){ 
-0922:  BSF    F94.2
-0924:  BTFSS  F82.2
-0926:  BRA    0934
+0946:  BSF    F94.2
+0948:  BTFSS  F82.2
+094A:  BRA    095C
 ....................          if(sentido!=baixo) 
-0928:  MOVF   x10,W
-092A:  SUBLW  03
-092C:  BZ    0932
+094C:  MOVLB  1
+094E:  MOVF   x10,W
+0950:  SUBLW  03
+0952:  BZ    0958
 ....................             sentido = cima; 
-092E:  MOVLW  01
-0930:  MOVWF  x10
+0954:  MOVLW  01
+0956:  MOVWF  x10
 ....................       } 
-0932:  BRA    0954
+0958:  BRA    0982
+095A:  MOVLB  0
 ....................       else if(input(esq)){ 
-0934:  BSF    F94.4
-0936:  BTFSS  F82.4
-0938:  BRA    0944
+095C:  BSF    F94.4
+095E:  BTFSS  F82.4
+0960:  BRA    0970
 ....................          if(sentido!=direita) 
-093A:  MOVF   x10,F
-093C:  BZ    0942
+0962:  MOVLB  1
+0964:  MOVF   x10,F
+0966:  BZ    096C
 ....................             sentido = esquerda; 
-093E:  MOVLW  02
-0940:  MOVWF  x10
+0968:  MOVLW  02
+096A:  MOVWF  x10
 ....................       } 
-0942:  BRA    0954
+096C:  BRA    0982
+096E:  MOVLB  0
 ....................       else if(input(bai)){ 
-0944:  BSF    F94.5
-0946:  BTFSS  F82.5
-0948:  BRA    0954
+0970:  BSF    F94.5
+0972:  BTFSS  F82.5
+0974:  BRA    0984
 ....................          if(sentido!=cima) 
-094A:  DECFSZ x10,W
-094C:  BRA    0950
-094E:  BRA    0954
+0976:  MOVLB  1
+0978:  DECFSZ x10,W
+097A:  BRA    097E
+097C:  BRA    0982
 ....................             sentido = baixo; 
-0950:  MOVLW  03
-0952:  MOVWF  x10
+097E:  MOVLW  03
+0980:  MOVWF  x10
+0982:  MOVLB  0
 ....................       } 
 ....................       mov(); 
-0954:  MOVLB  0
-0956:  BRA    062E
-....................       draw(); 
-0958:  BRA    07EA
-....................       delay_ms(10); 
-095A:  MOVLW  0A
-095C:  MOVLB  1
-095E:  MOVWF  x16
-0960:  MOVLB  0
-0962:  RCALL  0604
-0964:  MOVLB  1
-0966:  BRA    0912
+0984:  BRA    062E
+....................       delay_ms(100); 
+0986:  MOVLW  64
+0988:  MOVLB  1
+098A:  MOVWF  x16
+098C:  MOVLB  0
+098E:  RCALL  0604
+0990:  BRA    0932
 ....................    } 
 .................... } 
-.................... /*    int n;               //circle test 
-0968:  SLEEP 
-....................       for(n=0;n<32;n+=3){ 
-....................          glcd_circle(64, 32, n, NO, 1); 
-....................          delay_ms(100); 
-....................       } 
-....................       glcd_fillScreen(1); 
-....................       for(n=0;n<32;n+=3){ 
-....................          glcd_circle(64, 32, n, NO, 0); 
-....................          delay_ms(100); 
-....................       } 
-....................       glcd_fillScreen(0);*/ 
-....................        
-.................... /*    char Str1[20];       //text test 
-....................       Str1 = "Loren Ipsun"; 
-....................       int n; 
-....................       for(n=0;n<4;n++){ 
-....................          glcd_fillScreen(0); 
-....................          glcd_text57(0,0,Str1,n,1); 
-....................          delay_ms(500); 
-....................       }*/ 
-....................        
-.................... /*    int x,y;       //lazy clock 
-....................       float a; 
-....................       for(a=0;a<6.2831;a+=0.0523598){ 
-....................          y=(float)-30*cos(a); 
-....................          x=(float)30*sin(a); 
-....................          y+=32; 
-....................          x+=64; 
-....................          glcd_fillScreen(0); 
-....................          glcd_circle(64, 32, 32, NO, 1); 
-....................          glcd_line(64,32,x,y,1); 
-....................          delay_ms(500); 
-....................       }*/ 
-....................        
-.................... /* set_adc_channel(0);     //osciloscope 
-....................    int8 xa,x,n=0; 
-....................    char pt[10],pv[10]; 
-....................    pt = "100ms"; 
-....................    pv = "78.25v"; 
-....................    glcd_text57(0,57,pv,1,1); 
-....................    glcd_text57(90,57,pt,1,1); 
-....................    while(TRUE){ 
-....................       n++; 
-....................       if(n>127){ 
-....................          n=1; 
-....................          glcd_fillScreen(0); 
-....................          glcd_text57(0,57,pv,1,1); 
-....................          glcd_text57(90,57,pt,1,1); 
-....................       } 
-....................       xa=x; 
-....................       x=read_adc()/4; 
-....................       glcd_line(n-1,xa,n,x,1); 
-....................       delay_ms(100); 
-....................    }*/ 
+0992:  SLEEP 
 
 Configuration Fuses:
    Word  1: C000   PLL1 CPUDIV1 NOUSBDIV XT FCMEN IESO
