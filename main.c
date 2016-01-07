@@ -11,10 +11,14 @@
 #use delay(clock=4MHz,crystal=4MHz)
 
 //bibliotecas
-#include <GLCD.c>
+#define  MCU_RAM
+#define  MANUAL_UPDATE
+#include <KS0108.h>
 
-#define width     128
-#define height    64
+#define width     62
+#define xMargin   1
+#define height    62
+#define yMargin   1
 #define initSize  10
 #define direita   0
 #define dir       pin_c1
@@ -24,7 +28,9 @@
 #define esq       pin_c4
 #define baixo     3
 #define bai       pin_c5
-char yl[10] = "You Lose!";
+char yl[10]       = "You Lose!";
+char score[10]    = "Score:";
+char sValue[10]   = "0";
 struct Dot{
    unsigned int x;
    unsigned int y;
@@ -41,47 +47,55 @@ void mov(){
    aux.y = snake[0].y;
    switch (sentido){
       case direita:
-         if(aux.x==width-1)
-            aux.x=0;
+         if(aux.x==width+xMargin-1)
+            aux.x=xMargin;
          else
             aux.x++;
       break;
       case cima:
-         if(aux.y==0)
-            aux.y=height-1;
+         if(aux.y==yMargin)
+            aux.y=height+yMargin-1;
          else
             aux.y--;
       break;
       case esquerda:
-         if(aux.x==0)
-            aux.x=width-1;
+         if(aux.x==xMargin)
+            aux.x=width+xMargin-1;
          else
             aux.x--;
       break;
       case baixo:
-         if(aux.y==height-1)
-            aux.y=0;
+         if(aux.y==height+yMargin-1)
+            aux.y=yMargin;
          else
             aux.y++;
       break;
    }
    for(i=1;i<size;i++){
       if(aux.x==snake[i].x && aux.y==snake[i].y){     //end game
-         glcd_text57(0,0,yl,2,1);
+         glcd_fillScreen(0);
+         glcd_text57(10,24,yl,2,1);
+         glcd_update();
          delay_ms(1000);
+         glcd_text57( 0,44,score, 1,1);
+         glcd_text57(64,44,svalue,1,1);
+         glcd_update();
+         sleep();
          return;
       }
    }
    if(aux.x==point.x && aux.y==point.y){
       size++;
-      point.x = get_timer0() % width;
-      point.y = get_timer0() % height;
-      glcd_pixel(point.x,point.y,1);
+      point.x = get_timer0() % width + xMargin;
+      point.y = get_timer0() % height + yMargin;
+      //glcd_pixel(point.x,point.y,1);
+      
+      sprintf(sValue, "%d", size - initSize);
    }
    else{
-      glcd_pixel(snake[size-1].x,snake[size-1].y,0);
+      //glcd_pixel(snake[size-1].x,snake[size-1].y,0);
    }
-   glcd_pixel(aux.x,aux.y,1);
+   //glcd_pixel(aux.x,aux.y,1);
    for(i=size;i>0;i--){
       snake[i].x=snake[i-1].x;
       snake[i].y=snake[i-1].y;
@@ -90,14 +104,14 @@ void mov(){
    snake[0].y=aux.y;
 }
 
-/*void draw(){
+void draw_snake(){
    int8 i;
-   glcd_fillScreen(0);
+   //glcd_fillScreen(0);
    for(i=1;i<size;i++){
       glcd_pixel(snake[i].x,snake[i].y,1);
    }
    glcd_pixel(point.x,point.y,1);
-}*/
+}
 
 void main(){
    setup_adc_ports(AN0);
@@ -115,16 +129,21 @@ void main(){
 
    snake[0].x = 10;
    snake[0].y = 32;
-   /*snake[1].x = 63;
+   snake[1].x = 9;
    snake[1].y = 32;
-   snake[2].x = 62;
+   snake[2].x = 8;
    snake[2].y = 32;
-   snake[3].x = 61;
-   snake[3].y = 32;*/
+   snake[3].x = 7;
+   snake[3].y = 32;
    
    point.x = get_timer0() % width;
    point.y = get_timer0() % height;
    glcd_pixel(point.x,point.y,1);
+   
+   glcd_rect(0,0,64,64,NO,1);
+   glcd_text57(70,1, score,1,1);
+   glcd_text57(70,9, sValue,1,1);
+   glcd_update();
    
    while(TRUE){
       if(input(dir)){
@@ -144,6 +163,12 @@ void main(){
             sentido = baixo;
       }
       mov();
-      delay_ms(100);
+      draw_snake();
+      glcd_rect(xMargin-1,yMargin-1,width+xMargin,height+yMargin,NO,1);
+      glcd_text57(70,1, score,1,1);
+      glcd_text57(70,9, sValue,1,1);
+      glcd_update();
+      glcd_fillScreen(0);
+      //delay_ms(50);
    }
 }
